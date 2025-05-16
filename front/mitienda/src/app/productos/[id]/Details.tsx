@@ -3,9 +3,15 @@ import React from "react";
 import Card from "@/app/card-products/Card-detail";
 import { fetchProductById} from "../../services/Product";
 
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
 
 //export default async function Details({ params }: { params: { id: string } }) {
-export default async function Details({ params }: { params: { id: string } }) {
+export default async function Details({ params }: Props) {
   const { id } =  params;                      
 
   const products = await fetchProductById(id);

@@ -17,6 +17,7 @@ export interface CardProps {
     export const SearchProducts = async (find: string): Promise<CardProps[]> => {
         const products = await fetchHomeProducts();
     
+        //const filteredProducts = products.filter((product: CardProps) => {
         const filteredProducts = products.filter((product: CardProps) => {
             const name = product.name.toLowerCase();
             const description = product.description.toLowerCase();
@@ -35,11 +36,15 @@ export interface CardProps {
         }    
         return response.json();
     }
+    //export const fetchProductById = async (id: string) => {
     export const fetchProductById = async (id: string) => {
         const response = await fetchHomeProducts();
-    
-        const products = response.find((product: CardProps) => product.id == id);
-        if (!products) {
+        //const productId = Number(id);
+
+        //const products = response.find((product: CardProps) => product.id == id);
+        const product = response.find((product: CardProps) => product.id === id);
+
+        if (!product) {
             const emptyProduct: CardProps = {
                 id: "0",
                 name: "",
@@ -50,7 +55,7 @@ export interface CardProps {
                 categoryId: 0}
                 return emptyProduct;
         }
-        return products;
+        return product;
     }
 
 
