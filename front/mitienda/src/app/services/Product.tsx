@@ -16,8 +16,6 @@ export interface CardProps {
 
     export const SearchProducts = async (find: string): Promise<CardProps[]> => {
         const products = await fetchHomeProducts();
-    
-        //const filteredProducts = products.filter((product: CardProps) => {
         const filteredProducts = products.filter((product: CardProps) => {
             const name = product.name.toLowerCase();
             const description = product.description.toLowerCase();
@@ -29,19 +27,25 @@ export interface CardProps {
     
 
     export const fetchHomeProducts = async () => {
+      
+      try{
         const response = await fetch(`${ENV.API_URL}/products`);
         
         if (!response.ok){
-            throw new Error('Error al cargar los productos');
-        }    
-        return response.json();
+            throw new Error('Error al cargar los productos');      
+      }  
+         const data = await response.json();
+         return data;
+      
+      
+      }catch (error) {
+         console.error("Error al cargar los productos:", error); 
+      }
+       return [];
     }
-    //export const fetchProductById = async (id: string) => {
+  
     export const fetchProductById = async (id: string) => {
         const response = await fetchHomeProducts();
-        //const productId = Number(id);
-
-        //const products = response.find((product: CardProps) => product.id == id);
         const product = response.find((product: CardProps) => product.id === id);
 
         if (!product) {
