@@ -26,7 +26,7 @@ export interface CardProps {
     };
     
 
-    export const fetchHomeProducts = async () => {
+    /*export const fetchHomeProducts = async () => {
       
       try{
         const response = await fetch(`${ENV.API_URL}/products`);
@@ -42,7 +42,30 @@ export interface CardProps {
          console.error("Error al cargar los productos:", error); 
       }
        return [];
+    }*/
+
+       export const fetchHomeProducts = async () => {
+  try {
+    const response = await fetch(`${ENV.API_URL}/products`);
+    
+    if (!response.ok) {
+      throw new Error(`Error al cargar los productos: ${response.status}`);
     }
+
+    const text = await response.text();
+    if (!text) {
+      console.warn("Respuesta vacía desde /products");
+      return [];
+    }
+
+    const data = JSON.parse(text);
+    return data;
+  } catch (error) {
+    console.error("Error al cargar los productos:", error);
+    return [];
+  }
+};
+
   
     export const fetchProductById = async (id: string) => {
         const response = await fetchHomeProducts();
