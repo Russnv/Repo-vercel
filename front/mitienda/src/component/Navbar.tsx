@@ -29,12 +29,8 @@ useEffect(()=>{
     }
   };
 
-  let username:string = "default";
-  if(user){
-    username = user?.user.email;   
-  }
-  const avatarUrl = `https://api.dicebear.com/8.x/adventurer/svg?seed=${username}&backgroundColor=fef3c7&radius=50`;
-
+const username: string = user?.user?.email ?? "default";
+const avatarUrl = `https://api.dicebear.com/8.x/adventurer/svg?seed=${username}&backgroundColor=fef3c7&radius=50`;
 
 console.log("Navnar : " + cart.length);
 
