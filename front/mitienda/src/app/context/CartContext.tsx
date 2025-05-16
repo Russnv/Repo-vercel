@@ -62,7 +62,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const getCart = (): Product[] => {
-    if (getUser().user.id) {
+    if (getUser().user.id != undefined) {
       const uid = getUser().user.id;
       const storedCart = JSON.parse(
         localStorage.getItem(`cart_${uid}`) || "[]"
