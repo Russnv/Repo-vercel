@@ -30,7 +30,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<Product[]>([]);
   const [productsId, setProductsId] = useState<number[]>([]);
 
-  const { getUser} = useAuth();
+  const { getUser } = useAuth();
 
   const addProduct = (product: Product): boolean => {
     const uid = getUser().user.id;
@@ -62,13 +62,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const getCart = (): Product[] => {
-    const uid = getUser().user.id;
-    const storedCart = JSON.parse(
-      localStorage.getItem(`cart_${uid}`) || "[]"
-    );
-    console.log(`GET CART:  cart_${uid}`);
-    setCart(storedCart);
-    return storedCart;
+    if (getUser().user.id) {
+      const uid = getUser().user.id;
+      const storedCart = JSON.parse(
+        localStorage.getItem(`cart_${uid}`) || "[]"
+      );
+      console.log(`GET CART:  cart_${uid}`);
+      setCart(storedCart);
+      return storedCart;
+    }
+    return [];
   };
 
   const getArrayProducts = (): number[] => {
@@ -81,10 +84,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    
     getArrayProducts();
-    
-
   }, [cart]);
 
   return (
