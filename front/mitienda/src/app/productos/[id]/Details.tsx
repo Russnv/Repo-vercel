@@ -12,7 +12,7 @@ type Props = {
 
 //export default async function Details({ params }: { params: { id: string } }) {
 export default async function Details({ params }: Props) {
-  const { id } =  params;                      
+  const { id } = await params;                      
 
   const products = await fetchProductById(id);
 

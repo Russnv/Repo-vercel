@@ -9,7 +9,7 @@ type Props = {
 
 //export default async function Products({ params }: { params: { id: string } }) {
 export default async function Products({ params }: Props) {
-  const { id } =  params;
+  const { id } = await  params;
   
   const searchTerm = decodeURIComponent(id);
   console.log('Estoy por buscar el producto: ' + searchTerm);
