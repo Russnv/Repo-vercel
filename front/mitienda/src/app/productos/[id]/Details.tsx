@@ -6,9 +6,9 @@ import { fetchProductById} from "../../services/Product";
 
 //export default async function Details({ params }: { params: { id: string } }) {
 export default async function Details({ params }: { params: { id: string } }) {
-  const { id } = params;                      
+  const { id } =  params;                      
 
-  const products = await fetchProductById (id);
+  const products = await fetchProductById(id);
 
 
 

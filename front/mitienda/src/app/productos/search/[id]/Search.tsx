@@ -4,7 +4,7 @@ import { SearchProducts } from "../../../services/Product";
 
 
 export default async function Products({ params }: { params: { id: string } }) {
-  const { id } = await params;
+  const { id } =  params;
   
   const searchTerm = decodeURIComponent(id);
   console.log('Estoy por buscar el producto: ' + searchTerm);
