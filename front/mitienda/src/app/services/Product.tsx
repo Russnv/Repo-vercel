@@ -1,7 +1,7 @@
 import { ENV } from "@/config/envs";
 
 export interface CardProps {
-    id?: number;
+    id?: string;
     name: string;
     description: string;
     price: number;
@@ -35,13 +35,13 @@ export interface CardProps {
         }    
         return response.json();
     }
-    export const fetchProductById = async (id: number) => {
+    export const fetchProductById = async (id: string) => {
         const response = await fetchHomeProducts();
     
         const products = response.find((product: CardProps) => product.id == id);
         if (!products) {
             const emptyProduct: CardProps = {
-                id: 0,
+                id: "0",
                 name: "",
                 description: "",
                 price: 0,

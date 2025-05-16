@@ -25,6 +25,7 @@ export const Card: React.FC<CardProps> = ({
   const {addFavorite}= useFavorite();
   const[visitas,setVisitas]=useState(0);
 
+  
 
 
 useEffect(() => {
@@ -44,8 +45,10 @@ useEffect(() => {
   }
 }, [id]);
 
+  const pid:number=Number(id);
+
   const product: Product = {
-    id: id ?? 0,
+    id: pid ?? 0,
     name: name,
     price: price,
     img: image,
@@ -84,8 +87,9 @@ useEffect(() => {
         toast.error("No se puede agregar a favoritos: ID no definido");
         return;
       }
+      const pid:number = Number(id);
       const productToAdd: FavoriteProduct = {
-        id: id,
+        id: pid,
         name: name,
         description: description,
         price: price,
@@ -142,7 +146,7 @@ useEffect(() => {
           <div className="flex items-center space-x-2">
             <button
               className="px-2 py-1 text-green-600 border border-green-600 rounded hover:bg-green-100"
-              onClick={() => handleDecrease(id ?? 0)}
+              onClick={() => handleDecrease(pid ?? 0)}
             >
               -
             </button>

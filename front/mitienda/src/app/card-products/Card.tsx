@@ -26,11 +26,13 @@ export const Card: React.FC<CardProps> = ({
 
   useEffect(() => {}, []);
 
+  const pid:number = Number(id);
+
   const handleAddToCart = () => {
     if (logged) {
       if (id !== undefined) {
         const product: Product = {
-          id: id,
+          id: pid,
           name: name,
           price: price,
           img: image,
@@ -65,8 +67,9 @@ export const Card: React.FC<CardProps> = ({
         return;
       }
 
+      const pid:number=Number(id);
       const productToAdd: FavoriteProduct = {
-        id: id,
+        id: pid,
         name: name,
         description: description,
         price: price,
@@ -125,7 +128,7 @@ export const Card: React.FC<CardProps> = ({
           <div className="flex items-center space-x-2">
             <button
               className="px-2 py-1 text-green-600 border border-green-600 rounded hover:bg-green-100"
-              onClick={() => handleDecrease(id ?? 0)}
+              onClick={() => handleDecrease(pid ?? 0)}
             >
               -
             </button>
