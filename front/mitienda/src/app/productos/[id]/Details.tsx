@@ -17,7 +17,7 @@ export default async function Details({ params }: { params: Promise<{ id: string
     if (countProducts == 0) {
         return <div>Loading...</div>;
     }
-    if(products.id == 0) {
+    if(products.id == "0") {
         return <div>Producto no encontrado 
           <img src="/noEncontrado.jpg" alt="" />
         </div>;
