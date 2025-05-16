@@ -69,7 +69,12 @@ export interface CardProps {
   
     export const fetchProductById = async (id: string) => {
         const response = await fetchHomeProducts();
-        const product = response.find((product: CardProps) => product.id === id);
+        console.log('Response: ' + JSON.stringify(response));
+        const jsonRes:CardProps[] = response;
+        
+        //const product = jsonRes.find((product: CardProps) => product.id === id);
+        const product = jsonRes.find((product: CardProps) => String(product.id) === id);
+
 
         if (!product) {
             const emptyProduct: CardProps = {
