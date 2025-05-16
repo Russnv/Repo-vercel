@@ -7,7 +7,15 @@ import { SearchProducts } from "../../../services/Product";
 export default async function Products({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await  params;
   
-  const searchTerm = decodeURIComponent(id);
+  let paramId ="0";
+
+  if(id){
+    paramId=id;
+  }
+
+
+  const searchTerm = decodeURIComponent(paramId);
+
   console.log('Estoy por buscar el producto: ' + searchTerm);
 
   const products = await SearchProducts(searchTerm);
