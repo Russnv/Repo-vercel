@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logged: boolean = userLogged;
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("user") || "{}";
     if (storedUser) {
       setUser(JSON.parse(storedUser));
       setUserLogged(true);
