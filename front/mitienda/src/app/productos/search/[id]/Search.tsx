@@ -1,14 +1,10 @@
 import Card from "@/app/card-products/Card";
 import { SearchProducts } from "../../../services/Product";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
 
 //export default async function Products({ params }: { params: { id: string } }) {
-export default async function Products({ params }: Props) {
+//export default async function Products({ params }: Props) {
+export default async function Products({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await  params;
   
   const searchTerm = decodeURIComponent(id);
