@@ -28,7 +28,7 @@ export const Card: React.FC<CardProps> = ({
 
 
 useEffect(() => {
-  if(logged){
+  if(logged ){ 
 
     if(!id)return;
   const dataGurdarData = localStorage.getItem("visitas");
@@ -52,7 +52,7 @@ useEffect(() => {
   };
 
   const handleAddToCart = () => {
-    if(logged){
+    if(!logged){
     if (id !== undefined) {
       addProduct(product);
       setCount(1);

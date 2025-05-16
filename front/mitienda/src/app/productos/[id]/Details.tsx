@@ -4,10 +4,10 @@ import Card from "@/app/card-products/Card-detail";
 import { fetchProductById} from "../../services/Product";
 
 
-export default async function Details({ params }: { params: { id: number } }) {
+export default async function Details({ params }: { params: { id: string } }) {
   const { id } = await params;                      
-  
-  const products = await fetchProductById (id);
+  const idNumber: number = Number(id); 
+  const products = await fetchProductById (idNumber);
 
 
 

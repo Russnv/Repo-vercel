@@ -30,7 +30,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<Product[]>([]);
   const [productsId, setProductsId] = useState<number[]>([]);
 
-  const {  getUser} = useAuth();
+  const { getUser} = useAuth();
 
   const addProduct = (product: Product): boolean => {
     const uid = getUser().user.id;
