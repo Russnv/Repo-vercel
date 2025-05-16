@@ -28,8 +28,13 @@ useEffect(()=>{
       router.push(`/productos/search/${search}`);
     }
   };
- const username = user?.user.email;
-const avatarUrl = `https://api.dicebear.com/8.x/adventurer/svg?seed=${username}&backgroundColor=fef3c7&radius=50`;
+
+  let username:string = "default";
+  if(user){
+    username = user?.user.email;   
+  }
+  const avatarUrl = `https://api.dicebear.com/8.x/adventurer/svg?seed=${username}&backgroundColor=fef3c7&radius=50`;
+
 
 console.log("Navnar : " + cart.length);
 
