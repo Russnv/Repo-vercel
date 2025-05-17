@@ -7,13 +7,11 @@ import { fetchProductById} from "../../services/Product";
 //export default async function Details({ params }: { params: { id: string } }) {
 //export default async function Details({ params }: Props) {
 //export default async function Details({ params }: { params: Promise<{ id: string }> }) {
-export default async function Details({ params }: { params: { id: string } }) {
-
+//export default async function Details({ params }: { params: { id: string } }) {
+export default async function Details({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;                      
 
   const products = await fetchProductById(id);
-
-
 
   const countProducts = Object.keys(products).length;
     if (countProducts == 0) {
