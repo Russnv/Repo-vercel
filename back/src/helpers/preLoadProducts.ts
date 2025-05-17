@@ -18,7 +18,7 @@ const productsToPreLoad: IProduct[] = [
     description:
       "Experience power and elegance with the iPhone 11: capture stunning moments with its dual-camera system, enjoy exceptional performance, and immerse yourself in a brilliant Liquid Retina display. Discover a world of possibilities in the palm of your hand!",
     image:
-      "https://i.pinimg.com/236x/9b/dc/d6/9bdcd63044d3433037dc878d783adda2.jpg",
+      "https://i.blogs.es/187a45/iphone-11-pro-02/1366_2000.jpg",
     categoryId: 1,
     stock: 10,
   },
@@ -28,7 +28,7 @@ const productsToPreLoad: IProduct[] = [
     description:
       "Embrace efficiency and sophistication with the MacBook Air: lightweight design meets powerful performance, stunning Retina display brings your work to life, and all-day battery life keeps you productive wherever you go. Elevate your computing experience with the MacBook Air.",
     image:
-      "https://i.pinimg.com/236x/9b/dc/d6/9bdcd63044d3433037dc878d783adda2.jpg",
+      "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-og-202503?wid=1200&hei=630&fmt=jpeg&qlt=95&.v=1739216814915",
     categoryId: 2,
     stock: 10,
   },
@@ -38,7 +38,7 @@ const productsToPreLoad: IProduct[] = [
     description:
       "Unleash your creativity and productivity with the iPad Pro: powerful performance, stunning Liquid Retina display, and all-day battery life make the iPad Pro the perfect tool for work and play. Transform your ideas into reality with the iPad Pro.",
     image:
-      "https://i.pinimg.com/236x/9b/dc/d6/9bdcd63044d3433037dc878d783adda2.jpg",
+      "https://ipoint.com.ar/21151-large_default/magic-keyboard-for-ipad-pro-129-inch-5th-generation-spanish-black.jpg",
     categoryId: 3,
     stock: 10,
   },
@@ -48,7 +48,7 @@ const productsToPreLoad: IProduct[] = [
     description:
       "Stay connected and healthy with the Apple Watch Series 6: track your workouts, monitor your health, and stay in touch with the people and information you care about most. Experience the future of health and wellness with the Apple Watch Series 6.",
     image:
-      "https://i.pinimg.com/236x/9b/dc/d6/9bdcd63044d3433037dc878d783adda2.jpg",
+      "https://m.media-amazon.com/images/I/516lAFj-xUL._AC_SL1000_.jpg",
     categoryId: 4,
     stock: 10,
   },
@@ -58,7 +58,7 @@ const productsToPreLoad: IProduct[] = [
     description:
       "Immerse yourself in sound with the AirPods Pro: active noise cancellation, transparency mode, and customizable fit make the AirPods Pro the perfect companion for music, calls, and everything in between. Elevate your audio experience with the AirPods Pro.",
     image:
-      "https://i.pinimg.com/236x/9b/dc/d6/9bdcd63044d3433037dc878d783adda2.jpg",
+      "https://www.apple.com/v/airpods-pro/m/images/meta/og__eui2mpgzwyaa_overview.png",
     categoryId: 5,
     stock: 10,
   },
@@ -68,7 +68,7 @@ const productsToPreLoad: IProduct[] = [
     description:
       "Elevate your home audio experience with the HomePod mini: immersive sound, intelligent assistant, and smart home hub make the HomePod mini the perfect addition to your home. Enjoy a world of music, news, and more with the HomePod mini.",
     image:
-      "https://i.pinimg.com/236x/9b/dc/d6/9bdcd63044d3433037dc878d783adda2.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSglcYADjldwOaF0g2J0z_47nI0kjf9NJwWyg&s",
     categoryId: 6,
     stock: 10,
   },
