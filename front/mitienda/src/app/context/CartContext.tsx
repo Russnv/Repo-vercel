@@ -33,7 +33,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const { getUser } = useAuth();
 
   const addProduct = (product: Product): boolean => {
+    if(getUser() && getUser().user && getUser().user.id){
     const uid = getUser().user.id;
+    
+    
     const exists = cart.find((p) => p.id === product.id);
     if (exists) return false;
 
@@ -42,6 +45,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     localStorage.setItem(`cart_${uid}`, JSON.stringify(updatedCart));
     return true;
+    }
+    return false;
   };
 
   const removeProduct = (id: number): boolean => {

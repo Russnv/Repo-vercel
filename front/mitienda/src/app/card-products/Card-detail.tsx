@@ -23,26 +23,9 @@ export const Card: React.FC<CardProps> = ({
   const {addProduct, removeProduct} = useCart();
   const {logged} = useAuth();
   const {addFavorite}= useFavorite();
-  const[visitas,setVisitas]=useState(0);
-
   
-
-
 useEffect(() => {
-  if(logged ){ 
-
-    if(!id)return;
-  const dataGurdarData = localStorage.getItem("visitas");
-  const visitasData = dataGurdarData ? JSON.parse(dataGurdarData) : {};
-
-  const visitasActuales = visitasData[id] || 0;
-  const nuevasVisitas = visitasActuales + 1;
-
-  visitasData[id] = nuevasVisitas;
-  localStorage.setItem("visitas", JSON.stringify(visitasData));
-  console.log("✅ Visita registrada correctamente:", nuevasVisitas);
-  setVisitas(nuevasVisitas);
-  }
+ 
 }, [id]);
 
   const pid:number=Number(id);
@@ -55,7 +38,7 @@ useEffect(() => {
   };
 
   const handleAddToCart = () => {
-    if(!logged){
+    if(logged){
     if (id !== undefined) {
       addProduct(product);
       setCount(1);
@@ -82,7 +65,7 @@ useEffect(() => {
   };
     function AgregarFavorito() {
     if (logged) {
-    
+      console.log('AgregarFavorito: ' + logged);
       if (id === undefined) {
         toast.error("No se puede agregar a favoritos: ID no definido");
         return;
@@ -159,8 +142,7 @@ useEffect(() => {
             </button>
           </div>
         )}
-               <h1>Detalle del producto {id}</h1>
-         <p>Has visitado este producto {visitas} {visitas === 1 ? 'vez' : 'veces'}.</p>
+        
       </div>
     </div>
   );

@@ -6,65 +6,67 @@ import {
   useState,
   ReactNode,
 } from "react";
-import {useAuth} from './userContext'
+import { useAuth } from "./userContext";
 
 export type FavoriteProduct = {
   id: number;
   name: string;
-  description:string,
+  description: string;
   price: number;
-  stock:number;
+  stock: number;
   img: string;
 };
-
-
 
 export type FavoriteContextType = {
   favorite: FavoriteProduct[];
   addFavorite: (product: FavoriteProduct) => boolean;
-  removeFavorite: (id: number) => boolean;  
-
+  removeFavorite: (id: number) => boolean;
 };
 
-const FavoriteContext = createContext<FavoriteContextType | undefined>(undefined);
+const FavoriteContext = createContext<FavoriteContextType | undefined>(
+  undefined
+);
 
 export const FavoriteProvider = ({ children }: { children: ReactNode }) => {
   const [favorite, setFavorite] = useState<FavoriteProduct[]>([]);
-  const {user} = useAuth();
-
+  const { user } = useAuth();
 
   const addFavorite = (product: FavoriteProduct): boolean => {
-    const exists = favorite.find(p => p.id === product.id);
-    if (exists) return false;
+    if (user && user.user && user.user.id) {
+      const exists = favorite.find((p) => p.id === product.id);
+      if (exists) return false;
 
-    const updatedFavorite = [...favorite, product];    
-    setFavorite(updatedFavorite);
-    localStorage.setItem(`favorite_${user?.user.id}`, JSON.stringify(updatedFavorite));
-    return true;
+      const updatedFavorite = [...favorite, product];
+      setFavorite(updatedFavorite);
+      localStorage.setItem(
+        `favorite_${user?.user.id}`,
+        JSON.stringify(updatedFavorite)
+      );
+      return true;
+    }
+    return false;
   };
-
 
   const removeFavorite = (id: number): boolean => {
-    const exists = favorite.find(p => p.id === id);
+    const exists = favorite.find((p) => p.id === id);
     if (!exists) return false;
 
-    const updatedFavorite = favorite.filter(p => p.id !== id);
+    const updatedFavorite = favorite.filter((p) => p.id !== id);
     setFavorite(updatedFavorite);
-    localStorage.setItem(`favorite_${user?.user.id}`, JSON.stringify(updatedFavorite));
+    localStorage.setItem(
+      `favorite_${user?.user.id}`,
+      JSON.stringify(updatedFavorite)
+    );
     return true;
   };
 
-
-  useEffect(() => {
-    
-  }, [favorite]);
+  useEffect(() => {}, [favorite]);
 
   return (
-    <FavoriteContext.Provider value={{favorite,addFavorite,removeFavorite}}>
+    <FavoriteContext.Provider value={{ favorite, addFavorite, removeFavorite }}>
       {children}
     </FavoriteContext.Provider>
   );
-
 };
 
 export const useFavorite = () => {

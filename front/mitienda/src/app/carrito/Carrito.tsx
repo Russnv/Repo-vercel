@@ -13,13 +13,13 @@ export const Carrito: React.FC = () => {
   const {user, logged} = useAuth();
   const {cart,removeProduct, productsId, getCart, clearCart} = useCart();
   const [deleteproduct, setDeleteproduct] = useState<number | null>(null);
-
+    
   const handleCompra = async () => {  
   const userId:number = user?.user.id || 0;
   const token = user?.token;
   const products = productsId;
   
-
+     
     if (cart.length > 0) {
       try {
         const response = await fetch(`${ENV.API_URL}/orders`, {
@@ -58,8 +58,10 @@ export const Carrito: React.FC = () => {
 
   useEffect(() => {
     getCart();
-  console.log('Soy el getCart:' + getCart)
+ 
   }, []);
+
+
 
   return (
     logged && (
