@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import { CardProps } from "../services/Product";
 import Image from "next/image";
@@ -24,7 +24,7 @@ export const Card: React.FC<CardProps> = ({
   const { addFavorite } = useFavorite();
   const { logged } = useAuth();
 
-  useEffect(() => {}, []);
+
 
   const pid:number = Number(id);
 

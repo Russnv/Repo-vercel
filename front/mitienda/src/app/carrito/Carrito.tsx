@@ -6,14 +6,18 @@ import { ENV } from "@/config/envs";
 import { useAuth } from '../context/userContext';
 import {useCart} from '../context/CartContext';
 import { addHistorial } from "../historial/Historial";
+import { useRouter } from "next/navigation";
+
 
 
 export const Carrito: React.FC = () => {
-  
+
   const {user, logged} = useAuth();
   const {cart,removeProduct, productsId, getCart, clearCart} = useCart();
   const [deleteproduct, setDeleteproduct] = useState<number | null>(null);
-    
+  const router = useRouter();
+   
+  
   const handleCompra = async () => {  
   const userId:number = user?.user.id || 0;
   const token = user?.token;
@@ -51,20 +55,26 @@ export const Carrito: React.FC = () => {
 
     } 
   };
+ 
   const handleDelete = (id: number) => {
     removeProduct(id);
   };
  
 
   useEffect(() => {
+    if(!logged){
+        toast("❌Debes iniciar sesión para agregar al carrito😢");
+      router.push('/login');
+    }
     getCart();
  
-  }, []);
+  }, [logged]);
+
 
 
 
   return (
-    logged && (
+   logged &&  (
       <div className="w-full max-w-screen-lg p-4 mx-auto">
         <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
           <h1 className="mb-4 text-4xl font-bold text-gray-800">Carrito</h1>
@@ -186,8 +196,12 @@ export const Carrito: React.FC = () => {
           
         </div>
       </div>
-    )
-  );
+       
+
+    )  
+ 
+   
+  )
 };
 
 export default Carrito;

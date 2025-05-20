@@ -2,7 +2,7 @@
 
 import { ENV } from "@/config/envs";
 import React, { useState, useEffect } from "react";
-import { useAuth } from '../context/userContext';
+import { useAuth } from "../context/userContext";
 
 export const Login: React.FC = () => {
   const { login } = useAuth();
@@ -22,18 +22,17 @@ export const Login: React.FC = () => {
     password: "",
   });
 
-  
-  const isValidEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  const isValidEmail = (email: string): boolean =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  
-  const isValidPassword = (password: string): boolean => {
-    return password.length >= 6;
+  const isValidPassword = (password: string): boolean =>
+    password.length >= 6;
 
-   
-  };
+  const isFormComplete =
+    formData.email !== "" &&
+    formData.password !== "" &&
+    isValidEmail(formData.email) &&
+    isValidPassword(formData.password);
 
   useEffect(() => {
     const newErrors = { email: "", password: "" };
@@ -47,7 +46,7 @@ export const Login: React.FC = () => {
     if (!formData.password) {
       newErrors.password = "La contraseña es requerida.";
     } else if (!isValidPassword(formData.password)) {
-      newErrors.password = "La contraseña debe tener al menos 6 caracteres.";
+      newErrors.password = "Debe tener al menos 6 caracteres.";
     }
 
     setErrors(newErrors);
@@ -56,8 +55,11 @@ export const Login: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (errors.email || errors.password) {
-      setMessage({ type: "error", text: "Por favor, corrige los errores." });
+    if (!isFormComplete) {
+      setMessage({
+        type: "error",
+        text: "Por favor, completá correctamente todos los campos.",
+      });
       return;
     }
 
@@ -77,21 +79,23 @@ export const Login: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-
         login(data);
         setMessage({ type: "success", text: "¡Login exitoso!" });
-        
+
         setTimeout(() => {
           window.location.href = "/";
         }, 1500);
       } else {
-        setMessage({ type: "error", text: "Los datos ingresados no son correctos" });
+        setMessage({
+          type: "error",
+          text: "Los datos ingresados no son correctos.",
+        });
       }
     } catch (error) {
       console.error("Error en la petición:", error);
       setMessage({
         type: "error",
-        text: "Ocurrió un error al intentar iniciar sesión",
+        text: "Ocurrió un error al intentar iniciar sesión.",
       });
     }
 
@@ -116,15 +120,14 @@ export const Login: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit}>
-          
+         
           <div className="mb-4">
-            <label className="block mb-2 text-gray-700" htmlFor="email">
+            <label htmlFor="email" className="block mb-2 text-gray-700">
               Correo Electrónico
             </label>
             <input
               type="email"
               id="email"
-              name="email"
               value={formData.email}
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
@@ -137,15 +140,14 @@ export const Login: React.FC = () => {
             )}
           </div>
 
-          
+        
           <div className="mb-6">
-            <label className="block mb-2 text-gray-700" htmlFor="password">
+            <label htmlFor="password" className="block mb-2 text-gray-700">
               Contraseña
             </label>
             <input
               type="password"
               id="password"
-              name="password"
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
@@ -158,10 +160,14 @@ export const Login: React.FC = () => {
             )}
           </div>
 
-          
           <button
             type="submit"
-            className="w-full px-4 py-2 text-white transition duration-200 bg-green-500 rounded hover:bg-green-600"
+            disabled={!isFormComplete}
+            className={`w-full px-4 py-2 text-white rounded transition duration-200 ${
+              isFormComplete
+                ? "bg-green-500 hover:bg-green-600"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
           >
             Iniciar Sesión
           </button>

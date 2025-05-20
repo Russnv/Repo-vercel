@@ -1,12 +1,27 @@
 'use client';
-import React from "react";
 
+
+import toast from "react-hot-toast";
 import {useAuth} from "../context/userContext"
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 
-export const Dashboard: React.FC = () => {
+export default function Dashboard () {
+    const {user,logged} = useAuth();
+     const router = useRouter();
 
-    const {user, logged} = useAuth();
+
+
+    useEffect(() => {
+    if (!logged) {
+      toast.error("❌Necesitás estar logueado para acceder al Dashboard");
+      router.replace("/login");
+    }
+  }, [logged]);
+  
+if (!logged) return null;
+
    const username = user?.user.email;
 const avatarUrl = `https://api.dicebear.com/8.x/adventurer/svg?seed=${username}&backgroundColor=fef3c7&radius=50`;
 
@@ -14,7 +29,7 @@ const avatarUrl = `https://api.dicebear.com/8.x/adventurer/svg?seed=${username}&
     return (
        <div className="flex items-center justify-center bg-gray-100 min-w-screen">
   <div className="w-full max-w-md p-6 mt-10 bg-white border border-gray-300 shadow-lg rounded-xl">
-    {logged ? (
+    
       <>
         <h2 className="mb-4 text-2xl font-bold text-center text-green-600">✅ Identidad Validada</h2>
            <div className="flex items-center gap-2">
@@ -33,12 +48,8 @@ const avatarUrl = `https://api.dicebear.com/8.x/adventurer/svg?seed=${username}&
         <p><span className="text-sm font-bold text-green-600">Dirección:</span> {user?.user.address}</p>
         <p><span className="text-sm font-bold text-green-600">Telefono:</span> {user?.user.phone}</p> 
       </>
-    ) : (
-      <p className="text-center text-gray-500">Cargando...</p>
-    )}
   </div>
 </div>
 
     );
 }
-export default Dashboard;

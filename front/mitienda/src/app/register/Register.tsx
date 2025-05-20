@@ -1,7 +1,6 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import toast from "react-hot-toast";
 import { ENV } from "@/config/envs";
 
@@ -14,25 +13,33 @@ export const Register: React.FC = () => {
     address: "",
     phone: "",
   });
+
   const [errors, setErrors] = useState({
     email: "",
     password: "",
+    phone: "",
   });
+
   const [message, setMessage] = useState<{
     type: "success" | "error";
     text: string;
   } | null>(null);
 
-  const isValidEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  
+  const isValidEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const isValidPassword = (password: string): boolean => {
-    return password.length >= 6;
-  };
+  const isValidPassword = (password: string) => password.length >= 6;
+
+  const isPhoneValid = (phone: string) => /^\d+$/.test(phone);
+
+  const isFormComplete = Object.values(formData).every((value) => value !== "") &&
+    isValidEmail(formData.email) &&
+    isValidPassword(formData.password) &&
+    isPhoneValid(formData.phone);
+
   useEffect(() => {
-    const newErrors = { email: "", password: "" };
+    const newErrors = { email: "", password: "", phone: "" };
 
     if (!formData.email) {
       newErrors.email = "El correo es requerido.";
@@ -43,7 +50,13 @@ export const Register: React.FC = () => {
     if (!formData.password) {
       newErrors.password = "La contraseña es requerida.";
     } else if (!isValidPassword(formData.password)) {
-      newErrors.password = "La contraseña debe tener al menos 6 caracteres.";
+      newErrors.password = "Debe tener al menos 6 caracteres.";
+    }
+
+    if (!formData.phone) {
+      newErrors.phone = "El teléfono es requerido.";
+    } else if (!isPhoneValid(formData.phone)) {
+      newErrors.phone = "El teléfono solo debe contener números.";
     }
 
     setErrors(newErrors);
@@ -51,13 +64,16 @@ export const Register: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (errors.email || errors.password) {
-      setMessage({ type: "error", text: "Por favor, corrige los errores." });
+
+    if (!isFormComplete) {
+      setMessage({
+        type: "error",
+        text: "Por favor, completá todos los campos correctamente.",
+      });
       return;
     }
-    console.log("Form data submitted:", formData);
 
-    toast("✅ Registro exitoso!");
+    toast.success("✅ Registro exitoso!");
     setTimeout(() => {
       router.push("/login");
     }, 1500);
@@ -65,27 +81,24 @@ export const Register: React.FC = () => {
     setFormData({ email: "", password: "", name: "", address: "", phone: "" });
 
     try {
-      const fecthUser = async () => {
+      const fetchUser = async () => {
         await fetch(`${ENV.API_URL}/users/register`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
         });
       };
-
-      fecthUser();
+      fetchUser();
     } catch (error) {
       console.error("Error en la petición:", error);
-      toast("❌ Ocurrió un error al intentar registrarse");
+      toast.error("❌ Ocurrió un error al intentar registrarse");
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div className="w-full max-w-sm p-6 bg-white rounded shadow-md ">
-        <h1 className="mb-4 text-2xl font-bold text-center ">Register</h1>
+      <div className="w-full max-w-sm p-6 bg-white rounded shadow-md">
+        <h1 className="mb-4 text-2xl font-bold text-center">Register</h1>
 
         {message && (
           <div
@@ -100,52 +113,50 @@ export const Register: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit}>
+         
           <div className="mb-4">
-            <label className="block mb-2 text-gray-700" htmlFor="email">
+            <label htmlFor="email" className="block mb-2 text-gray-700">
               Email
             </label>
             <input
               type="email"
               id="email"
-              name="email"
               value={formData.email}
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
               className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Ingrese su correo electrónico"
+              placeholder="Correo electrónico"
             />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-            )}
+            {errors.email && <p className="text-sm text-red-600">{errors.email}</p>}
           </div>
+
+        
           <div className="mb-4">
-            <label className="block mb-2 text-gray-700" htmlFor="password">
+            <label htmlFor="password" className="block mb-2 text-gray-700">
               Contraseña
             </label>
             <input
               type="password"
               id="password"
-              name="password"
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
               className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Ingrese una contraseña"
+              placeholder="Mínimo 6 caracteres"
             />
-            {errors.password && (
-              <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-            )}
+            {errors.password && <p className="text-sm text-red-600">{errors.password}</p>}
           </div>
+
+       
           <div className="mb-4">
-            <label className="block mb-2 text-gray-700" htmlFor="name">
+            <label htmlFor="name" className="block mb-2 text-gray-700">
               Nombre
             </label>
             <input
               type="text"
               id="name"
-              name="name"
               value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
@@ -153,14 +164,15 @@ export const Register: React.FC = () => {
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
+
+     
           <div className="mb-4">
-            <label className="block mb-2 text-gray-700" htmlFor="address">
-              Direccion
+            <label htmlFor="address" className="block mb-2 text-gray-700">
+              Dirección
             </label>
             <input
               type="text"
               id="address"
-              name="address"
               value={formData.address}
               onChange={(e) =>
                 setFormData({ ...formData, address: e.target.value })
@@ -168,34 +180,39 @@ export const Register: React.FC = () => {
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
+
+       
           <div className="mb-4">
-            <label className="block mb-2 text-gray-700" htmlFor="phone">
+            <label htmlFor="phone" className="block mb-2 text-gray-700">
               Teléfono
             </label>
             <input
               type="text"
               id="phone"
-              name="phone"
               value={formData.phone}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (/^\d*$/.test(value)) {
-                  setFormData({ ...formData, phone: value });
-                }
-              }}
+              onChange={(e) =>
+                setFormData({ ...formData, phone: e.target.value })
+              }
               className="w-full p-2 border border-gray-300 rounded"
+              placeholder="Solo números"
             />
+            {errors.phone && <p className="text-sm text-red-600">{errors.phone}</p>}
           </div>
 
+      
           <button
             type="submit"
-            className="w-full px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
+            className={`w-full px-4 py-2 text-white rounded ${
+              isFormComplete ? "bg-green-500 hover:bg-green-600" : "bg-gray-400 cursor-not-allowed"
+            }`}
+            disabled={!isFormComplete}
           >
-            Register
+            Registrarse
           </button>
         </form>
       </div>
     </div>
   );
 };
+
 export default Register;

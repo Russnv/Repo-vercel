@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 //component
 import {   Product} from '../context/CartContext';
 import {useAuth} from '../context/userContext';
+import { useRouter } from "next/navigation";
+import toast from 'react-hot-toast';
 
 
 type Historials = {
@@ -44,11 +46,14 @@ export const Historial: React.FC = () => {
   const [historial, setHistorial] = useState<Historials[]>([]);
   
   const {user, logged} = useAuth();
+  const router = useRouter();
   
 
   useEffect(() => {
-
-    console.log('Estado del usuaroi:' + logged);
+    if(!logged){
+  toast('❌Necesitas estar logueado para ver el Historial');
+  router.push('login');
+    }
     if (logged) {
       const historialKey = `historial_${user?.user.id}`;
       
