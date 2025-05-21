@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { CardProps } from "../services/Product";
 import Image from "next/image";
@@ -20,13 +20,19 @@ export const Card: React.FC<CardProps> = ({
   id,
 }) => {
   const [count, setCount] = React.useState(0);
-  const { addProduct, removeProduct } = useCart();
+  const { addProduct, removeProduct,cart} = useCart();
   const { addFavorite } = useFavorite();
   const { logged } = useAuth();
 
-
+const productId:number = Number(id);
+const exists = cart.find((p) => p.id === productId);
 
   const pid:number = Number(id);
+  useEffect(()=>{
+    if(exists){
+   handleAddToCart();
+}    
+  },[exists])
 
   const handleAddToCart = () => {
     if (logged) {

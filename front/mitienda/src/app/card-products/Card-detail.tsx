@@ -20,13 +20,18 @@ export const Card: React.FC<CardProps> = ({
   id,
 }) => {
   const [count, setCount] =useState(0);
-  const {addProduct, removeProduct} = useCart();
+  const {addProduct, removeProduct,cart} = useCart();
   const {logged} = useAuth();
   const {addFavorite}= useFavorite();
+
+  const productId:number = Number(id);
+  const exists = cart.find((p)=>p.id===productId )
   
 useEffect(() => {
- 
-}, [id]);
+ if(exists){
+  handleAddToCart();
+ }
+}, [id,exists]);
 
   const pid:number=Number(id);
 
