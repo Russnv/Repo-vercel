@@ -1,32 +1,34 @@
 import { ENV } from "@/config/envs";
 
 export interface CardProps {
-    id?: string;
+  id?: string;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  image: string;
+  categoryId?: number;
+  category?: {
+    id: number;
     name: string;
-    description: string;
-    price: number;
-    stock: number;
-    image: string;  
-    categoryId?: number; 
-    category?: {
-        id: number;
-        name: string;
-    }; 
-    }  
+  };
+}
 
-    export const SearchProducts = async (find: string): Promise<CardProps[]> => {
-        const products = await fetchHomeProducts();
-        const filteredProducts = products.filter((product: CardProps) => {
-            const name = product.name.toLowerCase();
-            const description = product.description.toLowerCase();
-            return name.includes(find.toLowerCase()) || description.includes(find.toLowerCase());
-        });
-    
-        return filteredProducts;
-    };
-    
+export const SearchProducts = async (find: string): Promise<CardProps[]> => {
+  const products = await fetchHomeProducts();
+  const filteredProducts = products.filter((product: CardProps) => {
+    const name = product.name.toLowerCase();
+    const description = product.description.toLowerCase();
+    return (
+      name.includes(find.toLowerCase()) ||
+      description.includes(find.toLowerCase())
+    );
+  });
 
-    /*export const fetchHomeProducts = async () => {
+  return filteredProducts;
+};
+
+/*export const fetchHomeProducts = async () => {
       
       try{
         const response = await fetch(`${ENV.API_URL}/products`);
@@ -44,10 +46,10 @@ export interface CardProps {
        return [];
     }*/
 
-       export const fetchHomeProducts = async () => {
+export const fetchHomeProducts = async () => {
   try {
     const response = await fetch(`${ENV.API_URL}/products`);
-    
+
     if (!response.ok) {
       throw new Error(`Error al cargar los productos: ${response.status}`);
     }
@@ -66,32 +68,32 @@ export interface CardProps {
   }
 };
 
-  
-    export const fetchProductById = async (id: string) => {
-        const response = await fetchHomeProducts();
-        console.log('Response: ' + JSON.stringify(response));
-        const jsonRes:CardProps[] = response;
-        
-        //const product = jsonRes.find((product: CardProps) => product.id === id);
-        const product = jsonRes.find((product: CardProps) => String(product.id) === id);
+export const fetchProductById = async (id: string) => {
+  const response = await fetchHomeProducts();
+  console.log("Response: " + JSON.stringify(response));
+  const jsonRes: CardProps[] = response;
 
+  //const product = jsonRes.find((product: CardProps) => product.id === id);
+  const product = jsonRes.find(
+    (product: CardProps) => String(product.id) === id
+  );
 
-        if (!product) {
-            const emptyProduct: CardProps = {
-                id: "0",
-                name: "",
-                description: "",
-                price: 0,
-                stock: 0,
-                image: "",
-                categoryId: 0}
-                return emptyProduct;
-        }
-        return product;
-    }
-
-
-    export const Product = async (): Promise<CardProps[]> => {
-        return await fetchHomeProducts();
+  if (!product) {
+    const emptyProduct: CardProps = {
+      id: "0",
+      name: "",
+      description: "",
+      price: 0,
+      stock: 0,
+      image: "",
+      categoryId: 0,
     };
-    export default Product;
+    return emptyProduct;
+  }
+  return product;
+};
+
+export const Product = async (): Promise<CardProps[]> => {
+  return await fetchHomeProducts();
+};
+export default Product;

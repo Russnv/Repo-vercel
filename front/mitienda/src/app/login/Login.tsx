@@ -1,8 +1,8 @@
 "use client";
 
-import { ENV } from "@/config/envs";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/userContext";
+import { newLogin } from "../services/Auth";
 
 export const Login: React.FC = () => {
   const { login } = useAuth();
@@ -25,8 +25,7 @@ export const Login: React.FC = () => {
   const isValidEmail = (email: string): boolean =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const isValidPassword = (password: string): boolean =>
-    password.length >= 6;
+  const isValidPassword = (password: string): boolean => password.length >= 6;
 
   const isFormComplete =
     formData.email !== "" &&
@@ -68,17 +67,9 @@ export const Login: React.FC = () => {
 
   const submitLogin = async () => {
     try {
-      const response = await fetch(`${ENV.API_URL}/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
+      const stringForm = JSON.stringify(formData);
+      const data = await newLogin(stringForm);
+      if (data) {
         login(data);
         setMessage({ type: "success", text: "¡Login exitoso!" });
 
@@ -120,7 +111,6 @@ export const Login: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit}>
-         
           <div className="mb-4">
             <label htmlFor="email" className="block mb-2 text-gray-700">
               Correo Electrónico
@@ -140,7 +130,6 @@ export const Login: React.FC = () => {
             )}
           </div>
 
-        
           <div className="mb-6">
             <label htmlFor="password" className="block mb-2 text-gray-700">
               Contraseña

@@ -59,7 +59,7 @@ export const Historial: React.FC = () => {
       
       const storedHistorial = JSON.parse(localStorage.getItem(historialKey) || "[]");
       setHistorial(storedHistorial);
-
+     
       console.log('Historial UseEffect' + historial);
     }
   }, []);

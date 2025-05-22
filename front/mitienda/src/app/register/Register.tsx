@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { ENV } from "@/config/envs";
+import { newRegister } from "../services/Auth";
 
 export const Register: React.FC = () => {
   const router = useRouter();
@@ -62,37 +62,29 @@ export const Register: React.FC = () => {
     setErrors(newErrors);
   }, [formData]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  try {
 
-    if (!isFormComplete) {
+      const stringForm = JSON.stringify(formData)
+      const UserForm = await newRegister(stringForm);
+       if(UserForm)
+      toast.success("✅ Registro exitoso!");
+    setTimeout(() => {
+      router.push("/login");
+    }, 1500);
+    } catch (error) {
+      console.error("Error en la petición:", error);
+      toast.error("❌ Ocurrió un error al intentar registrarse");
+    }
+     if (!isFormComplete) {
       setMessage({
         type: "error",
         text: "Por favor, completá todos los campos correctamente.",
       });
       return;
     }
-
-    toast.success("✅ Registro exitoso!");
-    setTimeout(() => {
-      router.push("/login");
-    }, 1500);
-
     setFormData({ email: "", password: "", name: "", address: "", phone: "" });
-
-    try {
-      const fetchUser = async () => {
-        await fetch(`${ENV.API_URL}/users/register`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-      };
-      fetchUser();
-    } catch (error) {
-      console.error("Error en la petición:", error);
-      toast.error("❌ Ocurrió un error al intentar registrarse");
-    }
   };
 
   return (
