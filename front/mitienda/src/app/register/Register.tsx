@@ -18,6 +18,7 @@ export const Register: React.FC = () => {
     email: "",
     password: "",
     phone: "",
+    name: "",
   });
 
   const [message, setMessage] = useState<{
@@ -25,21 +26,29 @@ export const Register: React.FC = () => {
     text: string;
   } | null>(null);
 
-  
   const isValidEmail = (email: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const isValidPassword = (password: string) => password.length >= 6;
 
-  const isPhoneValid = (phone: string) => /^\d+$/.test(phone);
+  const isPhoneValid = (phone: string) => /^\d{10}$/.test(phone);
 
-  const isFormComplete = Object.values(formData).every((value) => value !== "") &&
+  const isValidName = (name: string) => /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(name);
+
+  const isFormComplete =
+    Object.values(formData).every((value) => value !== "") &&
     isValidEmail(formData.email) &&
     isValidPassword(formData.password) &&
-    isPhoneValid(formData.phone);
+    isPhoneValid(formData.phone) &&
+    isValidName(formData.name);
 
   useEffect(() => {
-    const newErrors = { email: "", password: "", phone: "" };
+    const newErrors = {
+      email: "",
+      password: "",
+      phone: "",
+      name: "",
+    };
 
     if (!formData.email) {
       newErrors.email = "El correo es requerido.";
@@ -56,34 +65,44 @@ export const Register: React.FC = () => {
     if (!formData.phone) {
       newErrors.phone = "El teléfono es requerido.";
     } else if (!isPhoneValid(formData.phone)) {
-      newErrors.phone = "El teléfono solo debe contener números.";
+      newErrors.phone =
+        "El teléfono debe tener exactamente 10 dígitos numéricos.";
+    }
+
+    if (!formData.name) {
+      newErrors.name = "El nombre es requerido.";
+    } else if (!isValidName(formData.name)) {
+      newErrors.name = "El nombre solo debe contener letras.";
     }
 
     setErrors(newErrors);
   }, [formData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  try {
+    e.preventDefault();
 
-      const stringForm = JSON.stringify(formData)
-      const UserForm = await newRegister(stringForm);
-       if(UserForm)
-      toast.success("✅ Registro exitoso!");
-    setTimeout(() => {
-      router.push("/login");
-    }, 1500);
-    } catch (error) {
-      console.error("Error en la petición:", error);
-      toast.error("❌ Ocurrió un error al intentar registrarse");
-    }
-     if (!isFormComplete) {
+    if (!isFormComplete) {
       setMessage({
         type: "error",
         text: "Por favor, completá todos los campos correctamente.",
       });
       return;
     }
+
+    try {
+      const stringForm = JSON.stringify(formData);
+      const UserForm = await newRegister(stringForm);
+      if (UserForm) {
+        toast.success("✅ Registro exitoso!");
+        setTimeout(() => {
+          router.push("/login");
+        }, 1500);
+      }
+    } catch (error) {
+      console.error("Error en la petición:", error);
+      toast.error("❌ Ocurrió un error al intentar registrarse");
+    }
+
     setFormData({ email: "", password: "", name: "", address: "", phone: "" });
   };
 
@@ -105,7 +124,7 @@ export const Register: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit}>
-         
+       
           <div className="mb-4">
             <label htmlFor="email" className="block mb-2 text-gray-700">
               Email
@@ -120,10 +139,11 @@ export const Register: React.FC = () => {
               className="w-full p-2 border border-gray-300 rounded"
               placeholder="Correo electrónico"
             />
-            {errors.email && <p className="text-sm text-red-600">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-sm text-red-600">{errors.email}</p>
+            )}
           </div>
 
-        
           <div className="mb-4">
             <label htmlFor="password" className="block mb-2 text-gray-700">
               Contraseña
@@ -138,7 +158,9 @@ export const Register: React.FC = () => {
               className="w-full p-2 border border-gray-300 rounded"
               placeholder="Mínimo 6 caracteres"
             />
-            {errors.password && <p className="text-sm text-red-600">{errors.password}</p>}
+            {errors.password && (
+              <p className="text-sm text-red-600">{errors.password}</p>
+            )}
           </div>
 
        
@@ -154,10 +176,14 @@ export const Register: React.FC = () => {
                 setFormData({ ...formData, name: e.target.value })
               }
               className="w-full p-2 border border-gray-300 rounded"
+              placeholder="Solo letras"
             />
+            {errors.name && (
+              <p className="text-sm text-red-600">{errors.name}</p>
+            )}
           </div>
 
-     
+    
           <div className="mb-4">
             <label htmlFor="address" className="block mb-2 text-gray-700">
               Dirección
@@ -173,7 +199,7 @@ export const Register: React.FC = () => {
             />
           </div>
 
-       
+         
           <div className="mb-4">
             <label htmlFor="phone" className="block mb-2 text-gray-700">
               Teléfono
@@ -186,16 +212,21 @@ export const Register: React.FC = () => {
                 setFormData({ ...formData, phone: e.target.value })
               }
               className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Solo números"
+              placeholder=" Numero de Telefono"
             />
-            {errors.phone && <p className="text-sm text-red-600">{errors.phone}</p>}
+           
+            {errors.phone && (
+              <p className="text-sm text-red-600">{errors.phone}</p>
+            )}
           </div>
 
       
           <button
             type="submit"
             className={`w-full px-4 py-2 text-white rounded ${
-              isFormComplete ? "bg-green-500 hover:bg-green-600" : "bg-gray-400 cursor-not-allowed"
+              isFormComplete
+                ? "bg-green-500 hover:bg-green-600"
+                : "bg-gray-400 cursor-not-allowed"
             }`}
             disabled={!isFormComplete}
           >
