@@ -160,7 +160,7 @@ export default function Navbar() {
             </li>
           )}
 
-          <li>
+          <li className="relative">
             <button
               onClick={() => {
                 if (!logged) {
@@ -172,17 +172,15 @@ export default function Navbar() {
                   router.push("/carrito");
                 }
               }}
-              className="text-3xl hover:text-gray-300 focus:outline-none"
+              className="relative text-3xl hover:text-gray-300 focus:outline-none"
             >
               🛒
             </button>
 
             {logged && cart.length > 0 && (
-              <div>
-                <p className="flex items-center justify-center w-6 h-6 -mt-6 -ml-2 text-xs text-white bg-red-700 rounded-full">
+                <p className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-700 rounded-full shadow-md -bottom-3 -right-2">
                   {cart.length}
                 </p>
-              </div>
             )}
           </li>
         </ul>
